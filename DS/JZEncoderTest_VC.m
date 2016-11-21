@@ -113,6 +113,8 @@
     [self.h264Encoder initEncode:VideoWidth height:VideoHeight];
     self.h264Encoder.delegate = self;
     
+    
+    
     if ([_session canSetSessionPreset:AVCaptureSessionPreset640x480]) {
         // 设置分辨率
         _session.sessionPreset = AVCaptureSessionPreset640x480;
@@ -153,6 +155,16 @@
     // 保存Connection,用于SampleBufferDelegate中判断数据来源(video or audio?)
     _videoConnection = [_videoOutput connectionWithMediaType:AVMediaTypeVideo];
     
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    
+    self.h264File = [documentsDirectory stringByAppendingString:@"/lyh.h264"];
+    [fileManager removeItemAtPath:self.h264File error:nil];
+    [fileManager createFileAtPath:self.h264File contents:nil attributes:nil];
+    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.h264File];
+    
+    
     // 启动session
     [_session startRunning];
     //将当前硬件采集视频图像显示到屏幕
@@ -163,15 +175,6 @@
     _previewLayer.frame = CGRectMake(0, 20, self.view.frame.size.height, self.view.frame.size.height - 80);
     [self.view.layer addSublayer:_previewLayer];
     
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    
-    self.h264File = [documentsDirectory stringByAppendingString:@"lyh.h264"];
-    [fileManager removeItemAtPath:self.h264File error:nil];
-    [fileManager createFileAtPath:self.h264File contents:nil attributes:nil];
-    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.h264File];
 }
 
 #pragma mark - 实现 AVCaptureOutputDelegate：
@@ -187,20 +190,20 @@
         //NSLog(@"在这里获得video sampleBuffer，做进一步处理（编码H.264）");
         
         // 取得当前视频尺寸信息
-//        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-//        NSInteger width = CVPixelBufferGetWidth(pixelBuffer);
-//        NSInteger height = CVPixelBufferGetHeight(pixelBuffer);
-//        [self.h264Encoder encode:sampleBuffer];
+        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        NSInteger width = CVPixelBufferGetWidth(pixelBuffer);
+        NSInteger height = CVPixelBufferGetHeight(pixelBuffer);
+        [self.h264Encoder encode:sampleBuffer];
 //
         
-        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-        if (CVPixelBufferIsPlanar(pixelBuffer)) {
-            NSLog(@"kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange -> planar buffer");
-        }
-        CMVideoFormatDescriptionRef desc = NULL;
-        CMVideoFormatDescriptionCreateForImageBuffer(NULL, pixelBuffer, &desc);
-        CFDictionaryRef extensions = CMFormatDescriptionGetExtensions(desc);
-        NSLog(@"extensions = %@", extensions);
+//        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+//        if (CVPixelBufferIsPlanar(pixelBuffer)) {
+//            NSLog(@"kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange -> planar buffer");
+//        }
+//        CMVideoFormatDescriptionRef desc = NULL;
+//        CMVideoFormatDescriptionCreateForImageBuffer(NULL, pixelBuffer, &desc);
+//        CFDictionaryRef extensions = CMFormatDescriptionGetExtensions(desc);
+//        NSLog(@"extensions = %@", extensions);
         
     } else if (connection == _audioConnection) {  // Audio
         
@@ -212,7 +215,7 @@
                 
                 //NSLog(@"Audio data (%lu):%@", (unsigned long)encodedData.length,encodedData.description);
 #pragma mark -  音频数据(encodedData)
-                //[self.data appendData:encodedData];
+                [self.data appendData:encodedData];
             }else {
                 
                 NSLog(@"Error encoding AAC: %@", error);
@@ -234,9 +237,6 @@
     [_fileHandle writeData:sps];
     [_fileHandle writeData:ByteHeader];
     [_fileHandle writeData:pps];
-    
-    //    avformat_alloc_output_context2(<#AVFormatContext **ctx#>, <#AVOutputFormat *oformat#>, <#const char *format_name#>, <#const char *filename#>)
-    
 }
 - (void)gotEncodedData:(NSData*)data isKeyFrame:(BOOL)isKeyFrame {
     

@@ -29,6 +29,9 @@
 		21717CCA1DD6B3EB00461D08 /* IJKMediaFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21717CC91DD6B3EB00461D08 /* IJKMediaFramework.framework */; };
 		21717CCD1DD6B41A00461D08 /* JZPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21717CCC1DD6B41A00461D08 /* JZPlayController.m */; };
 		21DFD8BB1DDFEEE900F34864 /* MyPushController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DFD8BA1DDFEEE900F34864 /* MyPushController.m */; };
+		21DFD8C21DE28BC700F34864 /* JZAACEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DFD8BD1DE28BC700F34864 /* JZAACEncoder.m */; };
+		21DFD8C31DE28BC700F34864 /* JZEncoderTest_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DFD8BF1DE28BC700F34864 /* JZEncoderTest_VC.m */; };
+		21DFD8C41DE28BC700F34864 /* JZH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DFD8C11DE28BC700F34864 /* JZH264Encoder.m */; };
 		F105A7D5D01C7030F51B9352 /* libPods-DS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFE673F9ABC8E2B7706D19B6 /* libPods-DS.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +65,14 @@
 		21717CCC1DD6B41A00461D08 /* JZPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZPlayController.m; sourceTree = "<group>"; };
 		21DFD8B91DDFEEE900F34864 /* MyPushController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPushController.h; sourceTree = "<group>"; };
 		21DFD8BA1DDFEEE900F34864 /* MyPushController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPushController.m; sourceTree = "<group>"; };
+		21DFD8BC1DE28BC700F34864 /* JZAACEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZAACEncoder.h; sourceTree = "<group>"; };
+		21DFD8BD1DE28BC700F34864 /* JZAACEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZAACEncoder.m; sourceTree = "<group>"; };
+		21DFD8BE1DE28BC700F34864 /* JZEncoderTest_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZEncoderTest_VC.h; sourceTree = "<group>"; };
+		21DFD8BF1DE28BC700F34864 /* JZEncoderTest_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZEncoderTest_VC.m; sourceTree = "<group>"; };
+		21DFD8C01DE28BC700F34864 /* JZH264Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZH264Encoder.h; sourceTree = "<group>"; };
+		21DFD8C11DE28BC700F34864 /* JZH264Encoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZH264Encoder.m; sourceTree = "<group>"; };
+		21DFD8C51DE28BDE00F34864 /* Macro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macro.h; sourceTree = "<group>"; };
+		21DFD8C61DE28BE500F34864 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		5D65F4DDC544B8AADDFF0743 /* Pods-DS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DS/Pods-DS.debug.xcconfig"; sourceTree = "<group>"; };
 		BFDBD0F9F538B7753375279E /* Pods-DS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DS.release.xcconfig"; path = "Pods/Target Support Files/Pods-DS/Pods-DS.release.xcconfig"; sourceTree = "<group>"; };
 		BFE673F9ABC8E2B7706D19B6 /* libPods-DS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +132,12 @@
 				21DFD8BA1DDFEEE900F34864 /* MyPushController.m */,
 				21717CCB1DD6B41A00461D08 /* JZPlayController.h */,
 				21717CCC1DD6B41A00461D08 /* JZPlayController.m */,
+				21DFD8BC1DE28BC700F34864 /* JZAACEncoder.h */,
+				21DFD8BD1DE28BC700F34864 /* JZAACEncoder.m */,
+				21DFD8BE1DE28BC700F34864 /* JZEncoderTest_VC.h */,
+				21DFD8BF1DE28BC700F34864 /* JZEncoderTest_VC.m */,
+				21DFD8C01DE28BC700F34864 /* JZH264Encoder.h */,
+				21DFD8C11DE28BC700F34864 /* JZH264Encoder.m */,
 				21717C811DD2BAF400461D08 /* Main.storyboard */,
 				21717C951DD2F9D300461D08 /* abc.mp4 */,
 				21717C871DD2BAF400461D08 /* Assets.xcassets */,
@@ -136,6 +153,8 @@
 			isa = PBXGroup;
 			children = (
 				21717C791DD2BAF400461D08 /* main.m */,
+				21DFD8C51DE28BDE00F34864 /* Macro.h */,
+				21DFD8C61DE28BE500F34864 /* PrefixHeader.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -294,8 +313,11 @@
 			files = (
 				21DFD8BB1DDFEEE900F34864 /* MyPushController.m in Sources */,
 				21717C801DD2BAF400461D08 /* ViewController.m in Sources */,
+				21DFD8C41DE28BC700F34864 /* JZH264Encoder.m in Sources */,
+				21DFD8C21DE28BC700F34864 /* JZAACEncoder.m in Sources */,
 				21717CB01DD4561E00461D08 /* JZPushController.m in Sources */,
 				21717C7D1DD2BAF400461D08 /* AppDelegate.m in Sources */,
+				21DFD8C31DE28BC700F34864 /* JZEncoderTest_VC.m in Sources */,
 				21717C861DD2BAF400461D08 /* DS.xcdatamodeld in Sources */,
 				21717C7A1DD2BAF400461D08 /* main.m in Sources */,
 				21717CCD1DD6B41A00461D08 /* JZPlayController.m in Sources */,
@@ -426,6 +448,8 @@
 				);
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = $SRCROOT/DS/PrefixHeader.pch;
 				INFOPLIST_FILE = DS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -469,6 +493,8 @@
 				);
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = $SRCROOT/DS/PrefixHeader.pch;
 				INFOPLIST_FILE = DS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

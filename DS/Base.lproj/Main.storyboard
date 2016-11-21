@@ -23,34 +23,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A4O-XW-QuK">
-                                <rect key="frame" x="156" y="285" width="62" height="30"/>
+                                <rect key="frame" x="156" y="218.5" width="62" height="30"/>
                                 <state key="normal" title="直播推流"/>
                                 <connections>
                                     <segue destination="Ivi-fy-0ht" kind="push" id="oll-Gh-KBV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROe-p5-il0">
-                                <rect key="frame" x="156" y="352" width="62" height="30"/>
+                                <rect key="frame" x="156" y="278.5" width="62" height="30"/>
                                 <state key="normal" title="直播拉流"/>
                                 <connections>
                                     <segue destination="44e-0L-V0x" kind="push" id="pMd-pN-w8A"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WuC-iY-oqv">
-                                <rect key="frame" x="160" y="418.5" width="55" height="30"/>
+                                <rect key="frame" x="160" y="338.5" width="55" height="30"/>
                                 <state key="normal" title="MyPush"/>
                                 <connections>
                                     <segue destination="ns8-r5-kPT" kind="push" id="zXw-XR-z3g"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wo5-fH-d5K">
+                                <rect key="frame" x="148.5" y="398.5" width="78" height="30"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                <state key="normal" title="MyEncoder"/>
+                                <connections>
+                                    <segue destination="kpE-CZ-pVv" kind="push" id="Mbt-UB-Ibf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="A4O-XW-QuK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.9" id="Ma6-bW-UAw"/>
+                            <constraint firstItem="WuC-iY-oqv" firstAttribute="top" secondItem="ROe-p5-il0" secondAttribute="bottom" constant="30" id="1Lx-AF-xEP"/>
+                            <constraint firstItem="A4O-XW-QuK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.7" id="Ma6-bW-UAw"/>
+                            <constraint firstItem="ROe-p5-il0" firstAttribute="top" secondItem="A4O-XW-QuK" secondAttribute="bottom" constant="30" id="eCw-3N-fLH"/>
+                            <constraint firstItem="wo5-fH-d5K" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="frM-zQ-3gV"/>
                             <constraint firstItem="WuC-iY-oqv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iXL-hr-09g"/>
                             <constraint firstItem="ROe-p5-il0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lRV-JW-ljs"/>
-                            <constraint firstItem="WuC-iY-oqv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.3" id="uwa-9c-Nug"/>
-                            <constraint firstItem="ROe-p5-il0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.1" id="vNr-Rm-thz"/>
+                            <constraint firstItem="wo5-fH-d5K" firstAttribute="top" secondItem="WuC-iY-oqv" secondAttribute="bottom" constant="30" id="qQy-L3-Dp2"/>
                             <constraint firstItem="A4O-XW-QuK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="weO-Pp-MdT"/>
                         </constraints>
                     </view>
@@ -78,6 +88,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SjK-ay-uxG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1682" y="-169"/>
+        </scene>
+        <!--Encoder TestVC-->
+        <scene sceneID="A3m-ts-gjI">
+            <objects>
+                <viewController id="kpE-CZ-pVv" customClass="JZEncoderTest_VC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Rwa-se-9Ko"/>
+                        <viewControllerLayoutGuide type="bottom" id="FO0-wW-iHe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ACQ-c7-56Z">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="2T4-Ow-cGo"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nzo-Oc-VBF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-225" y="896"/>
         </scene>
         <!--My Push Controller-->
         <scene sceneID="j8V-3J-fBX">

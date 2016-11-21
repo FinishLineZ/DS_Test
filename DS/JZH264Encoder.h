@@ -20,9 +20,9 @@
 @interface JZH264Encoder : NSObject
 
 - (void)initWithConfiguration;
-- (void)start:(int)width  height:(int)height;
-- (void)initEncode:(int)width  height:(int)height;
-- (void)encode:(CMSampleBufferRef )sampleBuffer;
+- (void)start:(int)width height:(int)height;
+- (void)initEncode:(int)width height:(int)height;
+- (void)encode:(CMSampleBufferRef)sampleBuffer;
 - (void)End;
 
 @property (weak, nonatomic) NSString *error;

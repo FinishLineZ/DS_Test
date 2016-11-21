@@ -51,6 +51,7 @@ void didCompressH264(void *outputCallbackRefCon,
     JZH264Encoder* encoder = (__bridge JZH264Encoder*)outputCallbackRefCon;
     
     // Check if we have got a key frame first
+    // 判断当前帧是否为关键帧
     bool keyframe = !CFDictionaryContainsKey( (CFArrayGetValueAtIndex(CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, true), 0)), kCMSampleAttachmentKey_NotSync);
     
     
@@ -63,7 +64,9 @@ void didCompressH264(void *outputCallbackRefCon,
         // From the dict, get the value for the key "avcC"
         
         size_t sparameterSetSize, sparameterSetCount;
+        
         const uint8_t *sparameterSet;
+        
         OSStatus statusCode = CMVideoFormatDescriptionGetH264ParameterSetAtIndex(format, 0, &sparameterSet, &sparameterSetSize, &sparameterSetCount, 0 );
         if (statusCode == noErr)
         {
@@ -107,10 +110,105 @@ void didCompressH264(void *outputCallbackRefCon,
             
             // Move to the next NAL unit in the block buffer
             bufferOffset += AVCCHeaderLength + NALUnitLength;
+        }   
+    }
+}
+
+- (void)initEncode:(int)width  height:(int)height{
+    
+    dispatch_sync(aQueue, ^{
+        
+        // For testing out the logic, lets read from a file and then send it to encoder to create h264 stream
+        
+        // Create the compression session
+        OSStatus status = VTCompressionSessionCreate(NULL,
+                                                     width, height,
+                                                     kCMVideoCodecType_H264,
+                                                     NULL,
+                                                     NULL,
+                                                     NULL, didCompressH264, (__bridge void *)(self),
+                                                     &EncodingSession);
+        NSLog(@"H264: VTCompressionSessionCreate %d", (int)status);
+        
+        if (status != 0)
+        {
+            NSLog(@"H264: Unable to create a H264 session");
+            error = @"H264: Unable to create a H264 session";
+            
+            return ;
+            
         }
         
-    }
+        /*              Set the properties      */
+        //设置实时编码输出，降低编码延迟
+        VTSessionSetProperty(EncodingSession, kVTCompressionPropertyKey_RealTime, kCFBooleanTrue);
+        
+        //h264 profile, 直播一般使用baseline，可减少由于b帧带来的延时
+        VTSessionSetProperty(EncodingSession, kVTCompressionPropertyKey_ProfileLevel, kVTProfileLevel_H264_Main_AutoLevel);
+        
+        // 设置关键帧间隔，即gop size
+//        status = VTSessionSetProperty(EncodingSession, kVTCompressionPropertyKey_MaxKeyFrameInterval, (__bridge CFTypeRef)@(fps*2));
+
+        // 设置帧率，只用于初始化session，不是实际FPS
+//        status = VTSessionSetProperty(_encodeSesion, kVTCompressionPropertyKey_ExpectedFrameRate, (__bridge CFTypeRef)@(fps));
+//        NSLog(@"set framerate return: %d", (int)status);
+
+        
+        // Tell the encoder to start encoding
+        VTCompressionSessionPrepareToEncodeFrames(EncodingSession);
+    });
+}
+
+// 编码一帧图像，使用queue，防止阻塞系统摄像头采集线程
+- (void)encode:(CMSampleBufferRef )sampleBuffer{
     
+    dispatch_sync(aQueue, ^{
+        
+        frameCount++;
+        // Get the CV Image buffer
+        CVImageBufferRef imageBuffer = (CVImageBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
+        
+        // Create properties
+        // pts,必须设置，否则会导致编码出来的数据非常大，原因未知
+        CMTime presentationTimeStamp = CMTimeMake(frameCount, 1000);
+//        CMTime duration = CMTimeMake(1, DURATION);
+        CMTime duration = kCMTimeInvalid;
+        
+        VTEncodeInfoFlags flags;
+        
+        // Pass it to the encoder
+        // 送入编码器编码
+        OSStatus statusCode = VTCompressionSessionEncodeFrame(EncodingSession,
+                                                              imageBuffer,
+                                                              presentationTimeStamp,
+                                                              duration,
+                                                              NULL, NULL, &flags);
+        // Check for error
+        if (statusCode != noErr) {
+            NSLog(@"H264: VTCompressionSessionEncodeFrame failed with %d", (int)statusCode);
+            error = @"H264: VTCompressionSessionEncodeFrame failed ";
+            
+            // End the session
+            VTCompressionSessionInvalidate(EncodingSession);
+            CFRelease(EncodingSession);
+            EncodingSession = NULL;
+            error = NULL;
+            return;
+        }
+        //            NSLog(@"H264: VTCompressionSessionEncodeFrame Success");
+    });
+}
+
+- (void)End{
+    
+    // Mark the completion
+    VTCompressionSessionCompleteFrames(EncodingSession, kCMTimeInvalid);
+    
+    // End the session
+    VTCompressionSessionInvalidate(EncodingSession);
+    CFRelease(EncodingSession);
+    EncodingSession = NULL;
+    error = NULL;
 }
 
 - (void)start:(int)width  height:(int)height{
@@ -252,89 +350,6 @@ void didCompressH264(void *outputCallbackRefCon,
         close(fd);
     });
     
-    
-}
-- (void)initEncode:(int)width  height:(int)height{
-    
-    dispatch_sync(aQueue, ^{
-        
-        // For testing out the logic, lets read from a file and then send it to encoder to create h264 stream
-        
-        // Create the compression session
-        OSStatus status = VTCompressionSessionCreate(NULL,
-                                                     width, height,
-                                                     kCMVideoCodecType_H264,
-                                                     NULL,
-                                                     NULL,
-                                                     NULL, didCompressH264, (__bridge void *)(self),
-                                                     &EncodingSession);
-        NSLog(@"H264: VTCompressionSessionCreate %d", (int)status);
-        
-        if (status != 0)
-        {
-            NSLog(@"H264: Unable to create a H264 session");
-            error = @"H264: Unable to create a H264 session";
-            
-            return ;
-            
-        }
-        
-        // Set the properties
-        VTSessionSetProperty(EncodingSession, kVTCompressionPropertyKey_RealTime, kCFBooleanTrue);
-        VTSessionSetProperty(EncodingSession, kVTCompressionPropertyKey_ProfileLevel, kVTProfileLevel_H264_Main_AutoLevel);
-        
-        
-        // Tell the encoder to start encoding
-        VTCompressionSessionPrepareToEncodeFrames(EncodingSession);
-    });
-}
-- (void)encode:(CMSampleBufferRef )sampleBuffer{
-    
-    dispatch_sync(aQueue, ^{
-        
-        frameCount++;
-        // Get the CV Image buffer
-        CVImageBufferRef imageBuffer = (CVImageBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
-        
-        // Create properties
-        CMTime presentationTimeStamp = CMTimeMake(frameCount, 1000);
-        //CMTime duration = CMTimeMake(1, DURATION);
-        VTEncodeInfoFlags flags;
-        
-        // Pass it to the encoder
-        OSStatus statusCode = VTCompressionSessionEncodeFrame(EncodingSession,
-                                                              imageBuffer,
-                                                              presentationTimeStamp,
-                                                              kCMTimeInvalid,
-                                                              NULL, NULL, &flags);
-        // Check for error
-        if (statusCode != noErr) {
-            NSLog(@"H264: VTCompressionSessionEncodeFrame failed with %d", (int)statusCode);
-            error = @"H264: VTCompressionSessionEncodeFrame failed ";
-            
-            // End the session
-            VTCompressionSessionInvalidate(EncodingSession);
-            CFRelease(EncodingSession);
-            EncodingSession = NULL;
-            error = NULL;
-            return;
-        }
-        //            NSLog(@"H264: VTCompressionSessionEncodeFrame Success");
-    });
-    
-    
-}
-
-- (void)End{
-    
-    // Mark the completion
-    VTCompressionSessionCompleteFrames(EncodingSession, kCMTimeInvalid);
-    
-    // End the session
-    VTCompressionSessionInvalidate(EncodingSession);
-    CFRelease(EncodingSession);
-    EncodingSession = NULL;
-    error = NULL;
     
 }
 
