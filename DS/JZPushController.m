@@ -74,7 +74,6 @@
     if(![self checkPrivacyAuthrity]) {
         NSLog(@"无权限");
     }
-    
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
